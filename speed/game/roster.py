@@ -1,4 +1,4 @@
-class Leaderboard:
+class Roster:
     """A code template for a person who directs the game. The responsibility of
     this class of objects is to control the sequence of play.
 
@@ -15,5 +15,12 @@ class Leaderboard:
         Args:
             self (Console): an instance of Console.
         """
-        pass
-    
+        self.__players = []
+
+    def get_roster(self):
+        """ Returns the list of players.
+
+        Args:
+            self (Roster): an instance of Roster.
+        """
+        return self.__players

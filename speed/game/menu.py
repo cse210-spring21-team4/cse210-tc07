@@ -1,4 +1,6 @@
 from game.console import Console
+from game.roster import Roster
+import inquirer
 
 
 class Menu(Console):
@@ -19,26 +21,63 @@ class Menu(Console):
             self (Console): an instance of Console.
         """
         super().__init__()
-        self.stop_game = False
-        self.__show_menu = True
-        self.__logo = []
-        self.__fame = []
-        self.__rules = []
 
-        # with open("mastermind/assets/logo.txt") as data:
-        #     next(data)
-        #     for line in data:
-        #         self.__logo.append(line)
+        self._roster = Roster()
 
-        # with open("mastermind/assets/fame.txt") as data:
-        #     next(data)
-        #     for line in data:
-        #         self.__fame.append(line)
-
-        # with open("mastermind/assets/rules.txt") as data:
-        #     next(data)
-        #     for line in data:
-        #         self.__rules.append(line)
+        self.player = ""
+        self.__show = True
+        self.__quit = False
+        self.__margin = " " * 5
 
     def main_menu(self):
-        input("MENU WILL APPEAR HERE.")
+        while self.__show:
+            self.show_menu()
+        return self.__quit
+
+    def show_menu(self):
+        self.clear_screen()
+        self.print_logo()
+        self.print_player()
+        select = self.get_selection()
+
+        input(select)
+
+    def print_player(self):
+        print(self.__margin, end="")
+        if not self.player:
+            self.cool_print(
+                f"{'Welcome to SPEED. Please select a player.':^60}",
+                margin=0
+                )
+        else:
+            self.cool_print(
+                f"{'Welcome {self.player}. Select START to begin round.':^60}",
+                margin=0
+                )
+
+    def get_selection(self):
+        p_num = 0
+        if self._roster.get_roster():
+            p_num = len(self._roster.get_roster())
+        add_text = "Add/Remove Players [" + str(p_num) + " registered]"
+
+        choice_list = [
+                (add_text, "add"),
+                "Rules",
+                ("Leaderboard", "scores"),
+                "Quit"
+                ]
+
+        if self.player:
+            choice_list.insert(0, "START")
+
+        questions = [
+            inquirer.List(
+                'selection',
+                message="MENU (Use ↑ and ↓ to select, ENTER to confirm)",
+                choices=choice_list,
+                carousel=True,
+                default="add")
+                ]
+
+        return inquirer.prompt(questions)['selection'].lower()

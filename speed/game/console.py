@@ -1,8 +1,6 @@
-# import os
-# import inquirer
-# from time import sleep, time
-# from sys import stdout
-# from json import load
+import os
+from time import sleep
+from sys import stdout
 
 
 class Console:
@@ -22,4 +20,63 @@ class Console:
         Args:
             self (Console): an instance of Console.
         """
-        pass
+        self.__logo = self.load_asset("logo")
+
+    def load_asset(self, asset=str):
+        """Private method for loading a given asset from assets folder.
+        Returns a list, loaded with lines from selected text file.
+
+        Args:
+            self (Console): an instance of Console.
+            asset (string): name of the .txt file to be loaded.
+        """
+        path = f"speed/assets/{asset}.txt"
+        new_list = []
+
+        with open(path) as data:
+            next(data)
+            for line in data:
+                new_list.append(line)
+
+        return new_list
+
+    def clear_screen(self):
+        """Detects OS type and sends appropriate console command to clear screen.
+
+        Args:
+            self (Console): An instance of Console.
+        """
+        os.system('cls' if os.name == 'nt' else 'clear')
+
+    def cool_print(self, text=str, newline=True, margin=5, rate=.02):
+        """Prints text in typewriter style.
+
+        Args:
+            self (Console): an instance of Console.
+            text (str): Text to print.
+            newline (bool): whether to end with carriage return
+        """
+        print(" " * margin, end='')
+        for letter in text:
+            sleep(.02)
+            stdout.write(letter)
+            stdout.flush()
+        if newline:
+            print()
+
+    def print_logo(self, left=5, top=1, bottom=1):
+        """Prints logo to screen. Has optional x and y parameters to offset logo
+        by specified amount of lines and spaces.
+
+        Args:
+            self (Console): An instance of Console.
+            left (int): Number of spaces to offset logo from left of screen
+            top (int): Number of lines to offset logo from top of screen
+            bottom (int): Number of spaces to print below logo
+        """
+        print('\n' * top, end="")
+
+        for line in self.__logo:
+            print((" " * left) + line, end="")
+
+        print('\n' * bottom, end="")
