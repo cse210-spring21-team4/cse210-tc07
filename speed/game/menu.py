@@ -1,5 +1,6 @@
 from game.console import Console
 from game.roster import Roster
+from game.words import Words
 import inquirer
 
 
@@ -21,7 +22,7 @@ class Menu(Console):
             self (Console): an instance of Console.
         """
         super().__init__()
-
+        self._words = Words()
         self._roster = Roster()
         
         self.player = ""
