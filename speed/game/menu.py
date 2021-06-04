@@ -1,6 +1,7 @@
 from game.console import Console
 from game.roster import Roster
 from game.words import Words
+from game.leaderboard import Leaderboard
 import inquirer
 
 
@@ -24,7 +25,8 @@ class Menu(Console):
         super().__init__()
         self._words = Words()
         self._roster = Roster()
-        
+        self._scores = Leaderboard()
+
         self.player = ""
         self.__initial = True
         self.__quit_menu = False
@@ -40,7 +42,7 @@ class Menu(Console):
 
     def __show_menu(self):
         self.clear_screen()
-        self.print_logo(cool=self.__initial)
+        self.print_logo(left=5, cool=self.__initial)
         self.__print_player()
         select = self.__get_selection()
 
@@ -51,7 +53,7 @@ class Menu(Console):
         elif select == "rules":
             self.__show_rules()
         elif select == "scores":
-            pass
+            self._scores.show_leaderboard()
         elif select == "quit":
             self.clear_screen()
             self.__quit_menu = True
