@@ -1,5 +1,4 @@
 Generated with Pat Gillespie's Text to ASCII Art Generator at https://patorjk.com/software/taag
-
       ::::::::  :::::::::  :::::::::: :::::::::: ::::::::: 
     :+:    :+: :+:    :+: :+:        :+:        :+:    :+: 
    +:+        +:+    +:+ +:+        +:+        +:+    +:+  

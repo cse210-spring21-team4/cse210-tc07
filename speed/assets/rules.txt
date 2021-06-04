@@ -1,0 +1,13 @@
+        
+        Welcome to the nonstop frenzy of SPEED!
+
+                            OBJECTIVE
+---------------------------------------------------------------------
+    Earn points by correctly typing the words on the screen.
+
+    A word is worth one point for each letter in the word.
+    The final score is calculated at the end of each round.
+
+---------------------------------------------------------------------
+                    Press ENTER to return to Menu
+---------------------------------------------------------------------

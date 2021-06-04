@@ -5,12 +5,12 @@ from asciimatics.screen import Screen
 from game.menu import Menu
 
 
-def main(screen):
+def main(screen, player=str):
 
     input_service = InputService(screen)
     output_service = OutputService(screen)
     director = Director(input_service, output_service)
-    director.start_game()
+    director.start_game(player)
 
 
 menu = Menu()
