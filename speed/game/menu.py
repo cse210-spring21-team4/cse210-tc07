@@ -23,46 +23,57 @@ class Menu(Console):
         super().__init__()
 
         self._roster = Roster()
-
+        
         self.player = ""
-        self.__show = True
-        self.__quit = False
+        self.__initial = True
+        self.__quit_menu = False
+        self.__play_game = True
         self.__margin = " " * 5
 
     def main_menu(self):
-        while self.__show:
-            self.show_menu()
-        return self.__quit
+        while not self.__quit_menu:
+            self.__show_menu()
+            self.__initial = False
+        self.__initial = True
+        return self.__play_game
 
-    def show_menu(self):
+    def __show_menu(self):
         self.clear_screen()
-        self.print_logo()
-        self.print_player()
-        select = self.get_selection()
+        self.print_logo(cool=self.__initial)
+        self.__print_player()
+        select = self.__get_selection()
 
-        input(select)
+        if select == "start":
+            self.__quit_menu = True
+        elif select == "select":
+            self.player = self._roster.show_roster_menu()
+        elif select == "rules":
+            self.__show_rules()
+        elif select == "scores":
+            pass
+        elif select == "quit":
+            self.clear_screen()
+            self.__quit_menu = True
+            self.__play_game = False
+            input("Game quit")
 
-    def print_player(self):
-        print(self.__margin, end="")
+    def __print_player(self):
         if not self.player:
-            self.cool_print(
-                f"{'Welcome to SPEED. Please select a player.':^60}",
-                margin=0
-                )
+            self.cool_print("NO PLAYER SELECTED.")
         else:
-            self.cool_print(
-                f"{'Welcome {self.player}. Select START to begin round.':^60}",
-                margin=0
-                )
+            name = self.player.upper()
+            self.cool_print(f"WELCOME {name}. Select START to begin round.")
+        self.pause(.2)
+        print()
 
-    def get_selection(self):
+    def __get_selection(self):
         p_num = 0
-        if self._roster.get_roster():
-            p_num = len(self._roster.get_roster())
-        add_text = "Add/Remove Players [" + str(p_num) + " registered]"
+        if self._roster.get_players():
+            p_num = len(self._roster.get_players())
+        add_text = "Select Player [" + str(p_num) + " registered]"
 
         choice_list = [
-                (add_text, "add"),
+                (add_text, "select"),
                 "Rules",
                 ("Leaderboard", "scores"),
                 "Quit"
@@ -81,3 +92,10 @@ class Menu(Console):
                 ]
 
         return inquirer.prompt(questions)['selection'].lower()
+
+    def __show_rules(self):
+        self.clear_screen()
+        self.print_logo()
+        for line in self.load_asset("rules"):
+            print(self.__margin + line, end="")
+        input()

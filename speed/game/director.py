@@ -4,4 +4,4 @@ class Director:
         pass
 
     def start_game(self, player=str):
-        input('Game started. Player is {player}')
+        input(f'Game started. Player is {player}')

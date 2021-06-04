@@ -15,4 +15,4 @@ def main(screen, player=str):
 
 menu = Menu()
 while menu.main_menu():
-    Screen.wrapper(main, menu.player)
+    Screen.wrapper(main)

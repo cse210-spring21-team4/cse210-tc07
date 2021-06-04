@@ -40,6 +40,14 @@ class Console:
 
         return new_list
 
+    def pause(self, seconds=float):
+        """Detects OS type and sends appropriate console command to clear screen.
+
+        Args:
+            self (Console): An instance of Console.
+        """
+        sleep(seconds)
+
     def clear_screen(self):
         """Detects OS type and sends appropriate console command to clear screen.
 
@@ -64,7 +72,7 @@ class Console:
         if newline:
             print()
 
-    def print_logo(self, left=5, top=1, bottom=1):
+    def print_logo(self, left=5, top=1, bottom=1, cool=False):
         """Prints logo to screen. Has optional x and y parameters to offset logo
         by specified amount of lines and spaces.
 
@@ -75,8 +83,16 @@ class Console:
             bottom (int): Number of spaces to print below logo
         """
         print('\n' * top, end="")
-
-        for line in self.__logo:
-            print((" " * left) + line, end="")
+        if cool:
+            time = .4
+            for line in self.__logo:
+                stdout.write(line)
+                stdout.flush()
+                sleep(time)
+                time *= .8
+            sleep(.3)
+        else:
+            for line in self.__logo:
+                print((" " * left) + line, end="")
 
         print('\n' * bottom, end="")
