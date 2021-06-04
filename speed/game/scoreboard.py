@@ -7,16 +7,16 @@ class Scoreboard:
         self.__ranks = {(n-1)*25: n for n in range(1, 21)}
         input(self.__ranks)
 
-    def add_score(self, points=int):
-        self.__score += len(points)
-        if self.__score in self.__ranks:
-            self.__level = self.__ranks[self.__score]
-
     def get_score(self):
         return self.__score
 
     def get_level(self):
         return self.__level
+
+    def add_score(self, points=int):
+        self.__score += len(points)
+        if self.__score in self.__ranks:
+            self.__level = self.__ranks[self.__score]
 
     def add_strike(self):
         self.__strikes += 1

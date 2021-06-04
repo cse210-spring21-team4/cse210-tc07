@@ -72,7 +72,8 @@ class Console:
         if newline:
             print()
 
-    def print_logo(self, left=5, top=1, bottom=1, cool=False):
+    def print_logo(self, left=5, top=1, bottom=1,
+                   cool=False, factor=.8, logo=[]):
         """Prints logo to screen. Has optional x and y parameters to offset logo
         by specified amount of lines and spaces.
 
@@ -82,17 +83,21 @@ class Console:
             top (int): Number of lines to offset logo from top of screen
             bottom (int): Number of spaces to print below logo
         """
+        text = logo if logo else self.__logo
+
         print('\n' * top, end="")
+        margin = " " * left
         if cool:
-            time = .4
-            for line in self.__logo:
+            time = .3
+            for line in text:
+                stdout.write(margin)
                 stdout.write(line)
                 stdout.flush()
                 sleep(time)
-                time *= .8
+                time *= factor
             sleep(.3)
         else:
             for line in self.__logo:
-                print((" " * left) + line, end="")
+                print(margin + line, end="")
 
         print('\n' * bottom, end="")
