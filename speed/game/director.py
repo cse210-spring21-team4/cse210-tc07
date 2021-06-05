@@ -80,5 +80,25 @@ class Director:
         Args:
             self (Director): An instance of Director.
         """
+        # (AH) player_input is what player typed and is stored in Buffer Class.
         player_input = self._buffer.get_buffer()
+        # (AH) player_input is compared to the key of the Words dictionary.
+        if player_input in self.words.get_words():
+            # (AH) if player_input correct, increment score.
+            self.scoreboard.add_score(1)
+            # (AH) clear the Buffer list for next round of play.
+            self.buffer.flush_buffer()
 
+    def _do_outputs(self):
+        """Outputs the important game information for each round of play.
+        In this case, that means checking the five random words falling down
+        on the screen have not yet been typed by the player.
+
+        Args:
+            self (Director): An instance of Director.
+        """
+        self._output_service.clear_screen()
+        self._output_service.draw_top()
+        self._output_service.draw_word()
+        self._output_service.draw_bottom()
+        self._output_service.flush_buffer()
