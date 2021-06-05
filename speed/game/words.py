@@ -1,4 +1,5 @@
 from random import sample, randint
+from game import constants
 
 
 class Words:
@@ -50,7 +51,7 @@ class Words:
                 unlocked.extend(self.__pool[key])
         new_word = sample(unlocked, 1)
         x = self.__get_x(new_word)
-        self.__words[new_word] = (x, 21)
+        self.__words[new_word] = (x, constants.MAX_Y + 1)
 
     def update_positions(self) -> int:
         """
@@ -92,7 +93,7 @@ class Words:
 
     def __get_x(self, word: str) -> int:
         """Returns random X coord. for entire given word to appear onscreen."""
-        return randint(0, (61 - len(word)))
+        return randint(0, (constants.MAX_X + 1 - len(word)))
 
     def __load_words(self) -> dict:
         """
