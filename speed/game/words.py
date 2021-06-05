@@ -1,4 +1,4 @@
-from random import sample
+from random import sample, randint
 
 
 class Words:
@@ -18,15 +18,24 @@ class Words:
             if key <= level:
                 unlocked.extend(self.__pool[key])
         new_word = sample(unlocked, 1)
-        self.__words[new_word] = (0, 0)
+        x = self.__get_x(new_word)
+        self.__words[new_word] = (x, 21)
 
-    def update_words(self, word=str, position=tuple):
-        self.__words[word] = position
+    def update_positions(self):
+        for item in self.__words.keys():
+            x, y = self.__words[item]
+            if y == 0:
+                self.__words.pop(item)
+            else:
+                self.__words[item] = (x, y - 1)
 
     def check_guess(self, word=str):
         if word in self.__words:
             self.__words.pop(word)
             return len(word)
+
+    def __get_x(self, word=str):
+        return randint(0, (61 - len(word)))
 
     def __load_words(self):
         with open("speed/assets/words.txt") as text:
