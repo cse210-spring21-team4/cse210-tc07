@@ -31,20 +31,6 @@ class Buffer:
         # self._buffer = flush_buffer(self)
         # self.times = -1
 
-    def get_buffer(self):
-        """ Retrieves the buffer.
-        (AH) Buffer is a list, so convert to string before Returning.
-
-        Args:
-            self (Buffer): An instance of Buffer.
-
-        Returns:
-            (AH) each keystroke is an element of buflist,
-                which is joined into a single string.
-        """
-        # return self._buffer
-        return "".join(self.buflist)
-
     def update_buffer(self, keystroke):
         """Adds any new keys being pressed to the buffer.
         (AH) Director Class will flush buffer.
@@ -66,6 +52,20 @@ class Buffer:
         #     self._buffer = ""
         #     for letter in self.buflist:
         #         self._buffer = self._buffer + self.bufflist[letter]
+
+    def get_buffer(self):
+        """ Retrieves the buffer.
+        (AH) Buffer is a list, so convert to string before Returning.
+
+        Args:
+            self (Buffer): An instance of Buffer.
+
+        Returns:
+            (AH) each keystroke is an element of buflist,
+                which is joined into a single string.
+        """
+        # return self._buffer
+        return "".join(self.buflist)
 
     def flush_buffer(self):
         """ Resets the buffer

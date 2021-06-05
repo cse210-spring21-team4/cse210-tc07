@@ -1,10 +1,11 @@
-
 from time import sleep
 from game import constants
 from game.words import Words
 from game.scoreboard import Scoreboard
 from game.buffer import Buffer
+
 # AGNES check import names with GitHub.
+
 
 class Director:
     """A code template for a person who directs the game.
@@ -36,6 +37,8 @@ class Director:
         self._output_service = output_service
         self._scoreboard = Scoreboard()
         self._buffer = Buffer()
+        # (AH) see get_inputs().
+        self.letter = None
 
     def start_game(self, player):
         """Starts the game loop to control the sequence of play.
@@ -44,11 +47,14 @@ class Director:
             self (Director): an instance of Director.
         """
         # (AH) changed from 'input' to print.
-        print(f'Game started. Player is {player}')
+        print(f"Game started. Player is {player}")
 
+        # (AH) Loop is for each keystroke at a time.
         while self._keep_playing:
             self._get_inputs()
-            self._do_updates()
+            # (AH) update to compare only when typed <enter>.
+            if self.input_service.get_letter() == "*":
+                self._do_updates()
             self._do_outputs()
             sleep(constants.FRAME_LENGTH)
 
@@ -61,9 +67,10 @@ class Director:
             self (Director): An instance of Director.
         """
 
-        # AGNES check with Sarah's code.
-        letter = self.input_service.get_letter()
-        self._buffer.update_buffer(letter)
+        # Agnes check with Sarah's code.
+        self.letter = self.input_service.get_letter()
+        if self.letter.isalpha():
+            self._buffer.update_buffer(self.letter)
 
     def _do_updates(self):
         """Updates the important game information for each round of play.
@@ -73,4 +80,5 @@ class Director:
         Args:
             self (Director): An instance of Director.
         """
+        player_input = self._buffer.get_buffer()
 
