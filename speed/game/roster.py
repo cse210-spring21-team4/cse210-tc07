@@ -30,13 +30,26 @@ class Roster(Console):
         self.__roster = self.__load_roster()
         self.__show_menu = True
 
-    def get_players(self):
+    def get_players(self) -> list:
+        """
+        Returns a list of all player profiles in the roster. If no
+        profiles are found, an empty list is returned.
+        """
         if self.__roster:
             return list(self.__roster.keys())
         else:
             return []
 
-    def show_roster_menu(self):
+    def show_roster_menu(self) -> str:
+        """
+        show_roster_menu displays the roster menu to the terminal
+
+        Based on user selection, this method can create/delete player profiles,
+        select a profile for gameplay, and/or exit the roster menu.
+
+        Returns:
+            str: Name of selected player profile
+        """
         while self.__show_menu:
             self.clear_screen()
             self.print_logo()
@@ -56,7 +69,13 @@ class Roster(Console):
         self.__show_menu = True
         return self.__selected_player
 
-    def __roster_menu(self):
+    def __roster_menu(self) -> str:
+        """
+        __roster_menu uses the Inquirer library to create an interactive menu.
+
+        Returns:
+            str: indicates the player's menu selection.
+        """
         title = "Select a profile. Press ENTER to confirm"
         if self.__selected_player:
             name = self.__selected_player.upper()
@@ -81,7 +100,10 @@ class Roster(Console):
 
         return inquirer.prompt(players)['selection']
 
-    def __delete_menu(self):
+    def __delete_menu(self) -> None:
+        """
+        Uses Inquirer to create a menu for deleting player profiles.
+        """
         self.clear_screen()
         self.print_logo()
         title = "Select profile to remove. Press ENTER to confirm"
@@ -102,8 +124,17 @@ class Roster(Console):
         if selection != "**back**":
             self.__confirm_delete(selection)
 
-    def __prompt_name(self):
+    def __prompt_name(self) -> str:
+        """
+        Prompts for new profile name and validates input.
 
+        If input is valid, returns name as a string. If input is invalid, it
+        notifies the player (i.e the name already exists or is too long/short),
+        and returns None.
+
+        Returns:
+            str: Name of new profile
+        """
         self.clear_screen()
         self.print_logo()
 
@@ -122,13 +153,15 @@ class Roster(Console):
             return name
 
     def __add_player(self):
+        """Attempts to get new profile name, updates roster if successful."""
         self.clear_screen()
         self.print_logo()
         name = self.__prompt_name()
         if name is not None:
             self.__update_roster(name)
 
-    def __confirm_delete(self, name=str):
+    def __confirm_delete(self, name: str):
+        ""
         self.clear_screen()
         self.print_logo()
         delete = inquirer.confirm(
