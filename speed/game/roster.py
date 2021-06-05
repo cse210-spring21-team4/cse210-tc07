@@ -6,33 +6,31 @@ from game.console import Console
 
 
 class Roster(Console):
-    """A code template for a person who directs the game. The responsibility of
-    this class of objects is to control the sequence of play.
-
-    Stereotype:
-        Service Provider, Interfacer
-
-    Attributes:
-        roster (Roster): An instance of the class of objects known as Roster.
     """
+    Roster is the class responsible for players' user profiles. This class is
+    built on the Console class, and has two primary functions:
+        1. Load/Save player profile data to the assets/roster.json file
+        2. Provide a menu for creating, deleting, and selecting player profiles
 
+    ARGS
+    Console : Class
+        Class which handles CLI printing.
+
+    ATTRIBUTES
+    selected_player : str
+        Name of selected player profile
+    roster : dict
+        Dictionary of user profiles, loaded from assets/roster.json
+    show_menu : bool
+        Indicates whether to continue displaying Roster menu in terminal
+    """
     def __init__(self):
-        """The class constructor.
-
-        Args:
-            self (Console): an instance of Console.
-        """
         super().__init__()
         self.__selected_player = ""
         self.__roster = self.__load_roster()
         self.__show_menu = True
 
     def get_players(self):
-        """ Returns the list of players.
-
-        Args:
-            self (Roster): an instance of Roster.
-        """
         if self.__roster:
             return list(self.__roster.keys())
         else:
@@ -59,11 +57,6 @@ class Roster(Console):
         return self.__selected_player
 
     def __roster_menu(self):
-        """Asks records player names.
-
-        Args:
-            self (Console): an instance of Console.
-        """
         title = "Select a profile. Press ENTER to confirm"
         if self.__selected_player:
             name = self.__selected_player.upper()
@@ -89,11 +82,6 @@ class Roster(Console):
         return inquirer.prompt(players)['selection']
 
     def __delete_menu(self):
-        """Asks records player names.
-
-        Args:
-            self (Console): an instance of Console.
-        """
         self.clear_screen()
         self.print_logo()
         title = "Select profile to remove. Press ENTER to confirm"
@@ -115,11 +103,7 @@ class Roster(Console):
             self.__confirm_delete(selection)
 
     def __prompt_name(self):
-        """Prompts for player name,.
 
-        Args:
-            self (Console): an instance of Console.
-        """
         self.clear_screen()
         self.print_logo()
 
