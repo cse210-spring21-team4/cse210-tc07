@@ -56,7 +56,7 @@ class Words:
     def update_positions(self) -> int:
         """
         update_positions subtracts 1 from the y coordinate of each word in the
-        __words dictionary. Any words that have fallen to the bottom of the
+        words dictionary. Any words that have fallen to the bottom of the
         screen (where Y equals zero) are removed from the dictionary.
 
         At the end of execution, this method returns the total number of words

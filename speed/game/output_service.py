@@ -31,7 +31,7 @@ class Output_Service:
         self._screen.print_at("-" * constants.MAX_X, 0, 0, 7)
         self._screen.print_at("-" * constants.MAX_X, 0, constants.MAX_Y, 7)
 
-    def draw_top(self, player=str, score=int, strikes=int):
+    def draw_top(self, player: str, level: int, score: int, strikes: int):
         """Draws the top of the game screen to show the player name,
         score, and strikes of the current game.
 
@@ -39,7 +39,9 @@ class Output_Service:
             self (OuputService): an instance of OutputService.
         """
         strike_text = "X" * strikes
-        text = f"{player:<15}Score:{score:<15}{strike_text:>30}"
+        level_text = f"Lvl. {level}"
+        score_text = f"Score: {score}"
+        text = f"{player:<15}{level_text:<15}{score_text:>15}{strike_text:>15}"
         self._screen.print_at(text, 0, 20, 7)
 
     def draw_word(self, words: dict):
