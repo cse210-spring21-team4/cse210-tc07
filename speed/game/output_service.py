@@ -48,7 +48,17 @@ class Output_Service:
         for word in words.items():
             text = word[0]
             x, y = word[1]
-            self._screen.print_at(text, x, y, 7)
+            n = len(text)
+            color = 2
+            if n > 4:
+                color = 3
+            if n > 9:
+                color = 1
+            if n > 14:
+                color = 6
+            if n > 19:
+                color = 5
+            self._screen.print_at(text, x, y, color)
 
     def draw_bottom(self, buffer=str):
         """Renders the buffer of the game to keep track of the input from
@@ -59,7 +69,6 @@ class Output_Service:
         """
         text = buffer
         self._screen.print_at(text, 0, 21, 7)
-
 
     def flush_buffer(self):
         """Renders the screen.

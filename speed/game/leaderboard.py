@@ -15,8 +15,7 @@ class Leaderboard(Console):
             printing.
     """
     def __init__(self):
-        """The class constructor
-
+        """
         Vars:
             self.__board: A dictionary of score/player rankings
             self.__header: A dictionary of score/player rankings
@@ -25,23 +24,32 @@ class Leaderboard(Console):
         self.__board = self.__load_leaderboard()
         self.__header = self.load_asset("hi_scores")
 
-    def new_entry(self, player=str, score=int):
-        timestamp = datetime.now().strftime("%b %-d %Y  %Y%m%d%H%M%S")
+    def new_entry(self, player: str, score: int):
+        """
+        Creates a new entry in assets/leaderboard.json
 
-        self.__leaderboard.update(
+        Args:
+            player (str): Name of player user profile
+            score (int): Score from round
+        """
+        timestamp = datetime.now().strftime("%b %d, %Y %Y%m%d%H%M%S")
+
+        self.__board.update(
             {timestamp: {
                 "score": score,
                 "player": player}})
 
         new_dict = {k: v for (k, v) in sorted(
-                self.__leaderboard.items(),
-                key=lambda x: x[1]["score"])}
-        with open("mastermind/assets/leaderboard.json", "w") as data:
+                self.__board.items(),
+                key=lambda x: x[1]["score"],
+                reverse=True)}
+        with open("speed/assets/leaderboard.json", "w") as data:
             dump(new_dict, data, indent=4)
 
         self.__board = self.__load_leaderboard()
 
     def show_leaderboard(self):
+        self.__board = self.__load_leaderboard()
         self.clear_screen()
         self.print_logo(cool=True, factor=.7, logo=self.__header)
         self.__print_rankings()
