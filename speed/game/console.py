@@ -65,8 +65,9 @@ class Console:
         if newline:
             print()
 
-    def print_logo(self, left: 5, top: 1, bottom: 1,
-                   cool: False, factor: .8, logo: list = []) -> None:
+    def print_logo(self, left: int = 5, top: int = 1, bottom: int = 1,
+                   cool: bool = False, factor: float = .8, logo: list = []
+                   ) -> None:
         """Prints logo to screen. Has "cool" mode for a more interesting print.
         Print the SPEED logo by default, but different logo can be specified.
 
