@@ -38,6 +38,9 @@ class Output_Service:
 
         Args:
             self (OuputService): an instance of OutputService.
+            player (string): name(s) of player(s) to render
+            score (int): score of game to render
+            strikes (int): strikes of game to render
         """
         strike_text = "X" * strikes
         level_text = f"Lvl. {level}"
@@ -50,19 +53,20 @@ class Output_Service:
 
         Args:
             self (OutputService): An instance of OutputService.
-            words (dictionary): The actors to render.
-        """
-
+            words (dictionary): The words to render.
+        """ 
         for word in words.items():
             text = word[0]
             x, y = word[1]
             self._screen.print_at(text, x, y, 7)
 
     def draw_bottom(self, buffer=str):
-        """
+        """Renders the buffer of the game to keep track of the input from 
+        the user.
 
         Args:
-
+            self (OuputService): An instance of OuputService.
+            buffer (string): The buffer to render
         """
         text = buffer
         self._screen.print_at(text, 0, 2, 7)
