@@ -1,11 +1,11 @@
-import sys
 from game import constants
-from asciimatics.widgets import Frame
 
-class OutputService:
-    """Outputs the game state. The responsibility of the class of objects is to draw the game state on the terminal. 
-    
-    Stereotype: 
+
+class Output_Service:
+    """Outputs the game state. The responsibility of the class of objects is to
+    draw the game state on the terminal.
+
+    Stereotype:
         Service Provider
 
     Attributes:
@@ -14,19 +14,19 @@ class OutputService:
 
     def __init__(self, screen):
         """The class constructor.
-        
+
         Args:
             self (OutputService): An instance of OutputService.
             screen (Screen): An Asciimatics Screen.
         """
         self._screen = screen
-        
+
     def clear_screen(self):
         """Clears the Asciimatics buffer in preparation for the next rendering.
 
         Args:
             self (OutputService): An instance of OutputService.
-        """ 
+        """
         self._screen.clear_buffer(7, 0, 0)
         self._screen.print_at("-" * constants.MAX_X, 0, 0, 7)
         self._screen.print_at("-" * constants.MAX_X, 0, constants.MAX_Y, 7)
@@ -48,7 +48,7 @@ class OutputService:
         Args:
             self (OutputService): An instance of OutputService.
             words (dictionary): The actors to render.
-        """ 
+        """
 
         for word in words.items():
             text = word[0]
@@ -69,5 +69,5 @@ class OutputService:
 
         Args:
             self (OutputService): An instance of OutputService.
-        """ 
-        self._screen.refresh()    
+        """
+        self._screen.refresh()
