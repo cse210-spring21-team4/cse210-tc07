@@ -42,10 +42,10 @@ class Director:
         self.buffer = []
         self.buffer_text = ""
 
-        self.words_per_min = 8
+        self.words_per_min = 30
         self.word_rate = self.__get_word_rate()
         self.cycle_count = self.word_rate - 15
-        self.fall_rate = 8
+        self.fall_rate = 4
         self.fall_count = 0
 
         self.player = player
@@ -93,9 +93,17 @@ class Director:
         strikes = self._words.update_positions(should_fall)
         self._scoreboard.add_strikes(strikes)
 
+        level = self._scoreboard.get_level()
         if self.cycle_count == self.word_rate:
-            self._words.add_word(self._scoreboard.get_level())
+            self._words.add_word(level)
             self.cycle_count = 0
+
+        if level > 5:
+            self.fall_rate = 20
+        elif level > 4:
+            self.fall_rate = 16
+        elif level > 3:
+            self.fall_rate = 8
 
         player_input = "".join(self.buffer)
         if self.check_guess:
