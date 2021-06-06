@@ -1,4 +1,4 @@
-from random import sample, randint
+from random import choice, randint
 from game import constants
 
 
@@ -49,14 +49,14 @@ class Words:
         for key in self.__pool:
             if key <= level:
                 unlocked.extend(self.__pool[key])
-        new_word = sample(unlocked, 1)
+        new_word = choice(unlocked)
         x = self.__get_x(new_word)
         self.__words[new_word] = (x, constants.MAX_Y + 1)
 
     def update_positions(self) -> int:
         """
         update_positions subtracts 1 from the y coordinate of each word in the
-        __words dictionary. Any words that have fallen to the bottom of the
+        words dictionary. Any words that have fallen to the bottom of the
         screen (where Y equals zero) are removed from the dictionary.
 
         At the end of execution, this method returns the total number of words
@@ -73,7 +73,7 @@ class Words:
                 self.__words[item] = (x, y - 1)
         return strikes
 
-    def check_guess(self, word: str) -> int | None:
+    def check_guess(self, word: str) -> int:
         """
         check_guess determines if a given word exists in the __words dictionary
 

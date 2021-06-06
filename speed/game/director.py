@@ -1,8 +1,9 @@
 from time import sleep
+
 from game import constants
 from game.words import Words
 from game.scoreboard import Scoreboard
-from game.buffer import Buffer
+
 
 # AGNES check import names with GitHub.
 
@@ -24,72 +25,80 @@ class Director:
         buffer (Buffer): The player types the word.
     """
 
-    def __init__(self, input_service, output_service):
+    def __init__(self, input_service, output_service, player: str):
         """The class constructor.
 
         Args:
             self (Director): an instance of Director.
         """
-        # (AH) Class attributes.
+        self._scoreboard = Scoreboard(player)
         self._words = Words()
         self._input_service = input_service
-        self._keep_playing = True
         self._output_service = output_service
-        self._scoreboard = Scoreboard()
-        self._buffer = Buffer()
-        # (AH) see get_inputs().
-        self.letter = None
 
-    def start_game(self, player):
+        self._keep_playing = True
+
+        self.check_guess = False
+        self.buffer = []
+        self.buffer_text = ""
+
+        self.words_per_min = 6
+        self.word_rate = self.__get_word_rate()
+        self.cycle_count = 0
+
+        self.player = player
+
+    def start_game(self):
         """Starts the game loop to control the sequence of play.
 
-        Args:
-            self (Director): an instance of Director.
+        ARGS
+        player : str
+            The username of a selected player profile.
         """
-        # (AH) changed from 'input' to print.
-        print(f"Game started. Player is {player}")
-
-        # (AH) Loop is for each keystroke at a time.
         while self._keep_playing:
             self._get_inputs()
-            # (AH) update to compare only when typed <enter>.
-            if self.input_service.get_letter() == "*":
-                self._do_updates()
-            self._do_outputs()
+            self._do_updates(self.player)
+            self._do_outputs(self.player)
+            self.cycle_count += 1
             sleep(constants.FRAME_LENGTH)
 
     def _get_inputs(self):
-        """Gets the inputs at the beginning of each round of play.
-        In this case,
-        that means getting the words typed by the player.
-
-        Args:
-            self (Director): An instance of Director.
         """
-
-        # Agnes check with Sarah's code.
-        self.letter = self.input_service.get_letter()
-        if self.letter.isalpha():
-            self._buffer.update_buffer(self.letter)
-
-    def _do_updates(self):
-        """Updates the important game information for each round of play.
-        In this case, that means checking that word typed by player
-        in Buffer is the same as the random word from the word list.
-
-        Args:
-            self (Director): An instance of Director.
+        Gets the keyboard input at the beginning of each play cycle.
+        If input is a letter, it is added to the buffer.
         """
-        # (AH) player_input is what player typed and is stored in Buffer Class.
-        player_input = self._buffer.get_buffer()
-        # (AH) player_input is compared to the key of the Words dictionary.
-        if player_input in self.words.get_words():
-            # (AH) if player_input correct, increment score.
-            self.scoreboard.add_score(1)
-            # (AH) clear the Buffer list for next round of play.
-            self.buffer.flush_buffer()
+        self.check_guess = False
+        letter = self._input_service.get_letter()
+        if letter.isalpha():
+            self.buffer.append(letter)
+        if self._input_service.get_letter() == "*":
+            self.check_guess = True
 
-    def _do_outputs(self):
+    def _do_updates(self, player: str):
+        """
+        _do_updates Updates score based on player guess
+
+        Consolidates the input buffer into a string, and passes it to the Words
+        class to see if the string is a valid guess. Upon confirmation, an int
+        is returned and added to the score. Then the input buffer is cleared.
+        """
+        strikes = self._words.update_positions()
+        self._scoreboard.add_strikes(strikes)
+
+        if self.cycle_count == self.word_rate:
+            self._words.add_word(self._scoreboard.get_level())
+            self.cycle_count = 0
+
+        player_input = "".join(self.buffer)
+        if self.check_guess:
+            points = self._words.check_guess(player_input)
+            if points:
+                self.scoreboard.add_score(points)
+            self.buffer = []
+
+        self.buffer_text = player_input.ljust(constants.MAX_X, "-")
+
+    def _do_outputs(self, player: str):
         """Outputs the important game information for each round of play.
         In this case, that means checking the five random words falling down
         on the screen have not yet been typed by the player.
@@ -98,7 +107,15 @@ class Director:
             self (Director): An instance of Director.
         """
         self._output_service.clear_screen()
-        self._output_service.draw_top()
-        self._output_service.draw_word()
-        self._output_service.draw_bottom()
-        self._output_service.flush_buffer()
+
+        level = self._scoreboard.get_level()
+        score = self._scoreboard.get_score()
+        strikes = self._scoreboard.get_strikes()
+
+        self._output_service.draw_top(self.player, level, score, strikes)
+        self._output_service.draw_word(self._words.get_words())
+        self._output_service.draw_bottom(self.buffer_text)
+        print(self.cycle_count)
+
+    def __get_word_rate(self):
+        return (60 / constants.FRAME_LENGTH) / self.words_per_min
