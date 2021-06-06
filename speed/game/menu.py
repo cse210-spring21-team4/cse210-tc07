@@ -79,7 +79,7 @@ class Menu(Console):
     def __print_player(self) -> None:
         """__print_player prints title text for the main menu."""
         if not self.player:
-            self.cool_print("NO PLAYER SELECTED.")
+            self.cool_print("NO PLAYER SELECTED. SELECT/ADD PLAYER.")
         else:
             name = self.player.upper()
             self.cool_print(f"WELCOME {name}. Select START to begin round.")

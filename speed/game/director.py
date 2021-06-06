@@ -3,6 +3,7 @@ from time import sleep
 from game import constants
 from game.words import Words
 from game.scoreboard import Scoreboard
+from game.leaderboard import Leaderboard
 
 
 # AGNES check import names with GitHub.
@@ -75,6 +76,8 @@ class Director:
             self.buffer.append(letter)
         if letter == "*":
             self.check_guess = True
+        if letter == "**back**":
+            self.buffer = []
 
     def _do_updates(self, player: str):
         """
@@ -132,7 +135,6 @@ class Director:
         self._output_service.draw_word(self._words.get_words())
         self._output_service.draw_bottom(self.buffer_text)
         self._output_service.flush_buffer()
-        print(self.cycle_count)
 
     def __get_word_rate(self):
         return int(((60 / constants.FRAME_LENGTH) / self.words_per_min)) - 1
