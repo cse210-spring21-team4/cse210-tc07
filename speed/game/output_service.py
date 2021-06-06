@@ -60,7 +60,6 @@ class Output_Service:
         text = buffer
         self._screen.print_at(text, 0, 21, 7)
 
-
     def flush_buffer(self):
         """Renders the screen.
         Args:

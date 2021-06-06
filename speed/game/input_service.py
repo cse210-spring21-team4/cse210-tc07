@@ -1,6 +1,3 @@
-import sys
-
-
 class Input_Service:
     """Detects player input. The responsibility of the class of objects is to
     detect player keypresses and translate them into a point representing a
@@ -35,7 +32,7 @@ class Input_Service:
         event = self._screen.get_key()
         if event is not None:
             if event == -1:
-                sys.exit()
+                result = "**quit**"
             elif event == 13:
                 result = "*"
             elif event == -300:

@@ -43,11 +43,35 @@ class Menu(Console):
         Returns:
             bool: indicates whether to start gameplay or exit the program.
         """
+        # print(self.__initial)
+        # print(self.__quit_menu)
+        # input(self.__play_game)
         while not self.__quit_menu:
             self.__show_menu()
             self.__initial = False
+        self.clear_screen()
+        self.__quit_menu = False
         self.__initial = True
         return self.__play_game
+
+    def game_over(self, results: dict) -> None:
+        self.clear_screen()
+        self.print_logo()
+        player, level, strikes, score = list(results.values())
+        print("\n\n\n")
+        self.cool_print(f"GAME OVER, {player}.")
+        print()
+        self.cool_print("FINAL LEVEL:", newline=False)
+        self.pause(.2)
+        print(f" {level}")
+        self.pause(.4)
+        self.cool_print("FINAL SCORE:", newline=False)
+        self.pause(.2)
+        print(f" {score}")
+        self.cool_print(f"\n{self.__margin}THANKS FOR PLAYING.")
+        self.cool_print(f"\n{self.__margin}Press ENTER to continue",
+                        newline=False)
+        input()
 
     def __show_menu(self) -> None:
         """
@@ -74,7 +98,6 @@ class Menu(Console):
             self.clear_screen()
             self.__quit_menu = True
             self.__play_game = False
-            input("Game quit")
 
     def __print_player(self) -> None:
         """__print_player prints title text for the main menu."""

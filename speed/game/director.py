@@ -32,6 +32,7 @@ class Director:
         Args:
             self (Director): an instance of Director.
         """
+        self._leaderboard = Leaderboard()
         self._scoreboard = Scoreboard(player)
         self._words = Words()
         self._input_service = input_service
@@ -50,6 +51,7 @@ class Director:
         self.fall_count = 0
 
         self.player = player
+        self.results = {}
 
     def start_game(self):
         """Starts the game loop to control the sequence of play.
@@ -65,6 +67,9 @@ class Director:
             self.cycle_count += 1
             sleep(constants.FRAME_LENGTH)
 
+        self.__end_round()
+        return self.results
+
     def _get_inputs(self):
         """
         Gets the keyboard input at the beginning of each play cycle.
@@ -78,6 +83,8 @@ class Director:
             self.check_guess = True
         if letter == "**back**":
             self.buffer = []
+        if letter == "**quit**":
+            self._keep_playing = False
 
     def _do_updates(self, player: str):
         """
@@ -95,6 +102,8 @@ class Director:
 
         strikes = self._words.update_positions(should_fall)
         self._scoreboard.add_strikes(strikes)
+        if self._scoreboard.get_strikes() >= 5:
+            self._keep_playing = False
 
         level = self._scoreboard.get_level()
         if self.cycle_count == self.word_rate:
@@ -115,7 +124,9 @@ class Director:
                 self._scoreboard.add_score(points)
             self.buffer = []
 
-        self.buffer_text = player_input.ljust(constants.MAX_X, "-")
+        mrgn = "-" * 3
+        text = mrgn + player_input
+        self.buffer_text = text.ljust(constants.MAX_X, "-")
 
     def _do_outputs(self, player: str):
         """Outputs the important game information for each round of play.
@@ -138,3 +149,19 @@ class Director:
 
     def __get_word_rate(self):
         return int(((60 / constants.FRAME_LENGTH) / self.words_per_min)) - 1
+
+    def __end_round(self):
+        level = self._scoreboard.get_level()
+        score = self._scoreboard.get_score()
+        strikes = self._scoreboard.get_strikes()
+        player = self.player
+
+        if score:
+            self._leaderboard.new_entry(player, score)
+
+        self.results = {
+            "player": self.player,
+            "level": level,
+            "strikes": strikes,
+            "score": score
+            }

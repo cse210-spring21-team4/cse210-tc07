@@ -10,9 +10,13 @@ def main(screen, player: str):
     input_service = Input_Service(screen)
     output_service = Output_Service(screen)
     director = Director(input_service, output_service, player)
-    director.start_game()
+    results = director.start_game()
+    return results
 
 
 menu = Menu()
-while menu.main_menu():
-    Screen.wrapper(main, arguments=[menu.player])
+play_game = menu.main_menu()
+while play_game:
+    results = Screen.wrapper(main, arguments=[menu.player])
+    menu.game_over(results)
+    play_game = menu.main_menu()
