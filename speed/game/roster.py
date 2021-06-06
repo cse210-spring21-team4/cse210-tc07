@@ -161,7 +161,15 @@ class Roster(Console):
             self.__update_roster(name)
 
     def __confirm_delete(self, name: str):
-        ""
+        """
+        Asks user (in terminal) to confirm deletion of a given profile.
+
+        If confirmation is received, profile name is passed to remove_player()
+        method to delete from roster.
+
+        Args:
+            name (str): Name of player profile to be deleted.
+        """
         self.clear_screen()
         self.print_logo()
         delete = inquirer.confirm(
@@ -172,6 +180,14 @@ class Roster(Console):
             input(f"'{name}' removed. Press ENTER to continue.")
 
     def __load_roster(self):
+        """
+        Loads and returns roster dictionary from assets/roster.json
+
+        If no data is available, returns an empty dictionary.
+
+        Returns:
+            dict: Player roster, stored in JSON file
+        """
         with open("speed/assets/roster.json", "r") as data:
             entries = load(data)
         if entries is not None:
@@ -179,7 +195,13 @@ class Roster(Console):
         else:
             return {}
 
-    def __update_roster(self, name=str):
+    def __update_roster(self, name: str):
+        """
+        Adds given player profile name to roster, with a timestamp.
+
+        Args:
+            name (str): Name of player profile to add
+        """
         timestamp = datetime.now().strftime("%Y %m %d %H%M%S")
         entry = {name: timestamp}
 
@@ -193,7 +215,13 @@ class Roster(Console):
             dump(new_roster, data, indent=4)
         self.__roster = self.__load_roster()
 
-    def __remove_player(self, name=str):
+    def __remove_player(self, name: str):
+        """
+        Removes given player profile from roster, with a timestamp.
+
+        Args:
+            name (str): Name of player profile to remove
+        """
         new_roster = self.__roster
         new_roster.pop(name)
         with open("speed/assets/roster.json", "w") as data:
