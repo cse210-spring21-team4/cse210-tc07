@@ -73,7 +73,7 @@ class Words:
                 self.__words[item] = (x, y - 1)
         return strikes
 
-    def check_guess(self, word: str) -> int | None:
+    def check_guess(self, word: str) -> int:
         """
         check_guess determines if a given word exists in the __words dictionary
 
