@@ -83,13 +83,13 @@ class Director:
         is returned and added to the score. Then the input buffer is cleared.
         """
         strikes = self._words.update_positions()
+        print(self._words.get_words())
         self._scoreboard.add_strikes(strikes)
 
         if self.cycle_count == self.word_rate:
             self._words.add_word(self._scoreboard.get_level())
             self.cycle_count = 0
             print("Word added!")
-            print(self._words.get_words())
 
         player_input = "".join(self.buffer)
         if self.check_guess:
@@ -117,6 +117,7 @@ class Director:
         self._output_service.draw_top(self.player, level, score, strikes)
         self._output_service.draw_word(self._words.get_words())
         self._output_service.draw_bottom(self.buffer_text)
+        self._output_service.flush_buffer()
         print(self.cycle_count)
 
     def __get_word_rate(self):

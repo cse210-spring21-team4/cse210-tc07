@@ -51,7 +51,7 @@ class Words:
                 unlocked.extend(self.__pool[key])
         new_word = choice(unlocked)
         x = self.__get_x(new_word)
-        self.__words[new_word] = (x, constants.MAX_Y + 1)
+        self.__words[new_word] = (x, 0)
 
     def update_positions(self) -> int:
         """
@@ -66,11 +66,11 @@ class Words:
         strikes = 0
         for item in list(self.__words.keys()):
             x, y = self.__words[item]
-            if y == 0:
+            if y == constants.MAX_Y + 1:
                 self.__words.pop(item)
                 strikes += 1
             else:
-                self.__words[item] = (x, y - 1)
+                self.__words[item] = (x, y + 1)
         return strikes
 
     def check_guess(self, word: str) -> int:

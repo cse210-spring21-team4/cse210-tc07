@@ -29,8 +29,6 @@ class Output_Service:
             self (OutputService): An instance of OutputService.
         """
         self._screen.clear_buffer(7, 0, 0)
-        self._screen.print_at("-" * constants.MAX_X, 0, 0, 7)
-        self._screen.print_at("-" * constants.MAX_X, 0, constants.MAX_Y, 7)
 
     def draw_top(self, player: str, level: int, score: int, strikes: int):
         """Draws the top of the game screen to show the player name,
@@ -42,11 +40,13 @@ class Output_Service:
             score (int): score of game to render
             strikes (int): strikes of game to render
         """
-        strike_text = "X" * strikes
-        level_text = f"Lvl. {level}"
-        score_text = f"Score: {score}"
-        text = f"{player:<15}{level_text:<15}{score_text:>15}{strike_text:>15}"
-        self._screen.print_at(text, 0, 20, 7)
+        margin = " " * 5
+        strike_t = "X" * strikes
+        level_t = f"Lvl.{level}"
+        score_t = f"Score:{score}"
+        info = f"{margin}{player:<15}{level_t:<15}{score_t:<15}{strike_t:>10}"
+        text = info.replace(" ", "-")
+        self._screen.print_at(text, 0, 0, 7)
 
     def draw_word(self, words: dict):
         """Renders the given dictionary of words on the screen.
@@ -69,7 +69,7 @@ class Output_Service:
             buffer (string): The buffer to render
         """
         text = buffer
-        self._screen.print_at(text, 0, 2, 7)
+        self._screen.print_at(text, 0, 21, 7)
 
     def flush_buffer(self):
         """Renders the screen.
