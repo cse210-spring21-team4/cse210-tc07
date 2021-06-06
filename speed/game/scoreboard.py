@@ -27,7 +27,10 @@ class Scoreboard:
         self.__score = 0
         self.__level = 1
         self.__strikes = 0
-        self.__ranks = {(n-1)*25: n for n in range(2, 21)}
+
+        def pt_calc(x):
+            return int((5/2) * (x - 1) * x)
+        self.__ranks = {pt_calc(n): n for n in range(2, 50)}
 
     def get_score(self) -> int:
         return self.__score
