@@ -64,16 +64,13 @@ class Words:
         a player receives.
         """
         strikes = 0
-        new_dict = self.__words
-        for item in new_dict.keys():
-            x, y = new_dict[item]
+        for item in list(self.__words.keys()):
+            x, y = self.__words[item]
             if y == 0:
-                new_dict.pop(item)
+                self.__words.pop(item)
                 strikes += 1
             else:
-                new_dict[item] = (x, y - 1)
-
-        self.__words = new_dict
+                self.__words[item] = (x, y - 1)
         return strikes
 
     def check_guess(self, word: str) -> int:
