@@ -1,4 +1,4 @@
-from random import sample, randint
+from random import choice, randint
 from game import constants
 
 
@@ -49,7 +49,7 @@ class Words:
         for key in self.__pool:
             if key <= level:
                 unlocked.extend(self.__pool[key])
-        new_word = sample(unlocked, 1)
+        new_word = choice(unlocked)
         x = self.__get_x(new_word)
         self.__words[new_word] = (x, constants.MAX_Y + 1)
 

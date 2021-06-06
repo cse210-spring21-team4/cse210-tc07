@@ -85,7 +85,7 @@ class Director:
         strikes = self._words.update_positions()
         self._scoreboard.add_strikes(strikes)
 
-        if self.cycle_count == self.word_rate():
+        if self.cycle_count == self.word_rate:
             self._words.add_word(self._scoreboard.get_level())
             self.cycle_count = 0
 
@@ -96,7 +96,7 @@ class Director:
                 self.scoreboard.add_score(points)
             self.buffer = []
 
-        self.buffer_text = player_input.ljust(constants.MAX_X, fillchar="-")
+        self.buffer_text = player_input.ljust(constants.MAX_X, "-")
 
     def _do_outputs(self, player: str):
         """Outputs the important game information for each round of play.
@@ -115,6 +115,7 @@ class Director:
         self._output_service.draw_top(self.player, level, score, strikes)
         self._output_service.draw_word(self._words.get_words())
         self._output_service.draw_bottom(self.buffer_text)
+        print(self.cycle_count)
 
     def __get_word_rate(self):
         return (60 / constants.FRAME_LENGTH) / self.words_per_min
