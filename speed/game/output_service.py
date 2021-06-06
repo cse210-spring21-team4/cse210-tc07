@@ -50,14 +50,14 @@ class Output_Service:
         Args:
             self (OutputService): An instance of OutputService.
             words (dictionary): The words to render.
-        """ 
+        """
         for word in words.items():
             text = word[0]
             x, y = word[1]
             self._screen.print_at(text, x, y, 7)
 
     def draw_bottom(self, buffer=str):
-        """Renders the buffer of the game to keep track of the input from 
+        """Renders the buffer of the game to keep track of the input from
         the user.
 
         Args:

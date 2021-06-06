@@ -50,7 +50,7 @@ class Scoreboard:
         Args:
             points (int): number to add to score
         """
-        self.__score += len(points)
+        self.__score += points
 
         for rank in self.__ranks.keys():
             if self.__score >= rank:
