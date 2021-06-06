@@ -38,8 +38,8 @@ class Menu(Console):
         """
         main_menu calls the show_menu method to display the parent menu.
 
-        The method loops through menu display until the player exits the game or
-        starts a round of gameplay.
+        The method loops through menu display until the player exits the game
+        or starts a round of gameplay.
         Returns:
             bool: indicates whether to start gameplay or exit the program.
         """
