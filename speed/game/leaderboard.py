@@ -5,7 +5,22 @@ from game.console import Console
 
 
 class Leaderboard(Console):
+    """The Leaderboard is stores and ranks the high score data. In addition to
+    providing a way of storing and retrieving score data in the assets/ folder,
+    it also provides methods for displaying score rankings to the console,
+    which is why Leaderboard is an extension of the Console superclass.
+
+    Args:
+        Console (Class): An instance of the Console class, which handles CLI
+            printing.
+    """
     def __init__(self):
+        """The class constructor
+
+        Vars:
+            self.__board: A dictionary of score/player rankings
+            self.__header: A dictionary of score/player rankings
+        """
         super().__init__()
         self.__board = self.__load_leaderboard()
         self.__header = self.load_asset("hi_scores")

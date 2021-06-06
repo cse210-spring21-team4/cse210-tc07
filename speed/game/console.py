@@ -4,31 +4,26 @@ from sys import stdout
 
 
 class Console:
-    """A code template for a person who directs the game. The responsibility of
-    this class of objects is to control the sequence of play.
-
-    Stereotype:
-        Service Provider, Interfacer
+    """
+     The Console class contains basic methods terminal printing, as well as for
+    loading text file assets and parsing those assets for display.
 
     Attributes:
-        roster (Roster): An instance of the class of objects known as Roster.
+    logo : list
+        an ASCII art logo, stored line-by-line in a list.
     """
 
     def __init__(self):
-        """The class constructor.
-
-        Args:
-            self (Console): an instance of Console.
-        """
+        """The class constructor."""
         self.__logo = self.load_asset("logo")
 
-    def load_asset(self, asset=str):
+    def load_asset(self, asset: str) -> list:
         """Private method for loading a given asset from assets folder.
         Returns a list, loaded with lines from selected text file.
 
         Args:
-            self (Console): an instance of Console.
-            asset (string): name of the .txt file to be loaded.
+        asset : String
+            name of the .txt file to be loaded.
         """
         path = f"speed/assets/{asset}.txt"
         new_list = []
@@ -40,29 +35,27 @@ class Console:
 
         return new_list
 
-    def pause(self, seconds=float):
-        """Detects OS type and sends appropriate console command to clear screen.
-
-        Args:
-            self (Console): An instance of Console.
-        """
+    def pause(self, seconds: float) -> None:
+        """Pauses operations for given number of seconds. """
         sleep(seconds)
 
-    def clear_screen(self):
-        """Detects OS type and sends appropriate console command to clear screen.
-
-        Args:
-            self (Console): An instance of Console.
-        """
+    def clear_screen(self) -> None:
+        """Detects OS type and sends console command to clear screen."""
         os.system('cls' if os.name == 'nt' else 'clear')
 
-    def cool_print(self, text=str, newline=True, margin=5, rate=.02):
-        """Prints text in typewriter style.
+    def cool_print(self, text: str, newline: bool = True, margin: int = 5,
+                   rate: float = .02):
+        """Prints text to the console in typewriter style.
 
         Args:
-            self (Console): an instance of Console.
-            text (str): Text to print.
-            newline (bool): whether to end with carriage return
+        text : str
+            Text to print.
+        newline : bool
+            Optional; Whether to add carriage return at end of line
+        margin : int
+            Optional; Number of spaces of offset line from left of screen.
+        rate : float
+            Optional; Speed (seconds )at which printing occurs.
         """
         print(" " * margin, end='')
         for letter in text:
@@ -72,16 +65,28 @@ class Console:
         if newline:
             print()
 
-    def print_logo(self, left=5, top=1, bottom=1,
-                   cool=False, factor=.8, logo=[]):
-        """Prints logo to screen. Has optional x and y parameters to offset logo
-        by specified amount of lines and spaces.
+    def print_logo(self, left: int = 5, top: int = 1, bottom: int = 1,
+                   cool: bool = False, factor: float = .8, logo: list = []
+                   ) -> None:
+        """Prints logo to screen. Has "cool" mode for a more interesting print.
+        Print the SPEED logo by default, but different logo can be specified.
 
         Args:
-            self (Console): An instance of Console.
-            left (int): Number of spaces to offset logo from left of screen
-            top (int): Number of lines to offset logo from top of screen
-            bottom (int): Number of spaces to print below logo
+        left : int
+            Optional; Number of spaces to offset logo from left of screen
+        top : int
+            Optional; Number of lines to offset logo from top of screen
+        bottom : int
+            Optional; Number of lines to print after logo
+        cool : bool
+            Optional; If True, printing occurs in a line-by-line "reveal".
+        factor : float
+            Optional; Acceleration rate of "cool" printing. (For example, the
+            default .8 rate means that each line prints in 80% of the time of
+            the previous line.)
+        logo : list of strings
+            Optional; Used to specify an alternate logo or header, which must
+            be a list of strings.
         """
         text = logo if logo else self.__logo
 
