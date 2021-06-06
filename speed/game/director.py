@@ -88,6 +88,8 @@ class Director:
         if self.cycle_count == self.word_rate:
             self._words.add_word(self._scoreboard.get_level())
             self.cycle_count = 0
+            print("Word added!")
+            print(self._words.get_words())
 
         player_input = "".join(self.buffer)
         if self.check_guess:
