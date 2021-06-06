@@ -42,9 +42,11 @@ class Director:
         self.buffer = []
         self.buffer_text = ""
 
-        self.words_per_min = 6
+        self.words_per_min = 8
         self.word_rate = self.__get_word_rate()
-        self.cycle_count = 0
+        self.cycle_count = self.word_rate - 15
+        self.fall_rate = 8
+        self.fall_count = 0
 
         self.player = player
 
@@ -71,7 +73,7 @@ class Director:
         letter = self._input_service.get_letter()
         if letter.isalpha():
             self.buffer.append(letter)
-        if self._input_service.get_letter() == "*":
+        if letter == "*":
             self.check_guess = True
 
     def _do_updates(self, player: str):
@@ -82,20 +84,24 @@ class Director:
         class to see if the string is a valid guess. Upon confirmation, an int
         is returned and added to the score. Then the input buffer is cleared.
         """
-        strikes = self._words.update_positions()
+        should_fall = False
+        self.fall_count += 1
+        if self.fall_count == (self.fall_rate - 1):
+            should_fall = True
+            self.fall_count = 0
+
+        strikes = self._words.update_positions(should_fall)
         self._scoreboard.add_strikes(strikes)
 
         if self.cycle_count == self.word_rate:
             self._words.add_word(self._scoreboard.get_level())
             self.cycle_count = 0
-            print("Word added!")
-            print(self._words.get_words())
 
         player_input = "".join(self.buffer)
         if self.check_guess:
             points = self._words.check_guess(player_input)
             if points:
-                self.scoreboard.add_score(points)
+                self._scoreboard.add_score(points)
             self.buffer = []
 
         self.buffer_text = player_input.ljust(constants.MAX_X, "-")
@@ -117,7 +123,8 @@ class Director:
         self._output_service.draw_top(self.player, level, score, strikes)
         self._output_service.draw_word(self._words.get_words())
         self._output_service.draw_bottom(self.buffer_text)
+        self._output_service.flush_buffer()
         print(self.cycle_count)
 
     def __get_word_rate(self):
-        return (60 / constants.FRAME_LENGTH) / self.words_per_min
+        return int(((60 / constants.FRAME_LENGTH) / self.words_per_min)) - 1

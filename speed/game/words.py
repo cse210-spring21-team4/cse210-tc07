@@ -51,9 +51,9 @@ class Words:
                 unlocked.extend(self.__pool[key])
         new_word = choice(unlocked)
         x = self.__get_x(new_word)
-        self.__words[new_word] = (x, constants.MAX_Y + 1)
+        self.__words[new_word] = (x, 0)
 
-    def update_positions(self) -> int:
+    def update_positions(self, fall: bool) -> int:
         """
         update_positions subtracts 1 from the y coordinate of each word in the
         words dictionary. Any words that have fallen to the bottom of the
@@ -64,16 +64,13 @@ class Words:
         a player receives.
         """
         strikes = 0
-        new_dict = self.__words
-        for item in new_dict.keys():
-            x, y = new_dict[item]
-            if y == 0:
-                new_dict.pop(item)
+        for item in list(self.__words.keys()):
+            x, y = self.__words[item]
+            if y == constants.MAX_Y + 1:
+                self.__words.pop(item)
                 strikes += 1
-            else:
-                new_dict[item] = (x, y - 1)
-
-        self.__words = new_dict
+            elif fall:
+                self.__words[item] = (x, y + 1)
         return strikes
 
     def check_guess(self, word: str) -> int:

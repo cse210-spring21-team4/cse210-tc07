@@ -1,6 +1,3 @@
-from game import constants
-from asciimatics.widgets import Frame
-
 class Output_Service:
     """Outputs the game state. The responsibility of the class of objects is to
     draw the game state on the terminal.
@@ -24,8 +21,6 @@ class Output_Service:
             self (OutputService): An instance of OutputService.
         """
         self._screen.clear_buffer(7, 0, 0)
-        self._screen.print_at("-" * constants.MAX_X, 0, 0, 7)
-        self._screen.print_at("-" * constants.MAX_X, 0, constants.MAX_Y, 7)
 
     def draw_top(self, player: str, level: int, score: int, strikes: int):
         """Draws the top of the game screen to show the player name,
@@ -36,10 +31,12 @@ class Output_Service:
             score (int): score of game to render
             strikes (int): strikes of game to render
         """
-        strike_text = "X" * strikes
-        level_text = f"Lvl. {level}"
-        score_text = f"Score: {score}"
-        text = f"{player:<15}{level_text:<15}{score_text:>15}{strike_text:>15}"
+        margin = " " * 5
+        strike_t = "X" * strikes
+        level_t = f"Lvl.{level}"
+        score_t = f"Score:{score}"
+        info = f"{margin}{player:<15}{level_t:<15}{score_t:<15}{strike_t:>10}"
+        text = info.replace(" ", "-")
         self._screen.print_at(text, 0, 0, 7)
 
     def draw_word(self, words: dict):
@@ -47,21 +44,22 @@ class Output_Service:
         Args:
             self (OutputService): An instance of OutputService.
             words (dictionary): The words to render.
-        """ 
+        """
         for word in words.items():
             text = word[0]
             x, y = word[1]
             self._screen.print_at(text, x, y, 7)
 
     def draw_bottom(self, buffer=str):
-        """Renders the buffer of the game to keep track of the input from 
+        """Renders the buffer of the game to keep track of the input from
         the user.
         Args:
             self (OuputService): An instance of OuputService.
             buffer (string): The buffer to render
         """
         text = buffer
-        self._screen.print_at(text, 0, 19, 7)
+        self._screen.print_at(text, 0, 21, 7)
+
 
     def flush_buffer(self):
         """Renders the screen.
